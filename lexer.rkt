@@ -1,5 +1,5 @@
 #lang racket
-(provide lex)
+(provide lex exn:lexer-error exn:lexer-error?)
 
 (define (make-pattern pattern)
   (regexp (string-append "^(" pattern ")")))
@@ -17,6 +17,11 @@
                (match-let ([(list _ m) (regexp-match (make-pattern regxp) code)])
                  (loop (substring code (string-length m))
                        (cons (list type m) tokens)))]
-              [#f (raise (string-append
-                          "Unable to parse code: "
-                          (substring code 0 (min 15 (string-length code)))))])))))
+              [#f (raise
+                   (exn:lexer-error
+                    (string-append
+                     "Unable to parse code: "
+                     (substring code 0 (min 15 (string-length code))))
+                    (current-continuation-marks)))])))))
+
+(struct exn:lexer-error exn ())

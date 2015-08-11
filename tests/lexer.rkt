@@ -40,4 +40,8 @@
     "it captures correctly"
     (check-equal? '(("eq" "==") ("num" "5"))
                   (lex '(("=+" "eq") ("[0-9]+" "num")) "== 5")))
-   ))
+
+   (test-case
+    "it fails to parse invalid code"
+    (check-exn exn:lexer-error?
+               (lambda () (lex '() "anything"))))))
