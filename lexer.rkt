@@ -1,5 +1,6 @@
 #lang racket
-(provide lex exn:lexer-error exn:lexer-error?)
+(provide lex
+         exn:lexer-error?)
 
 (define (make-pattern pattern)
   (regexp (string-append "^(" pattern ")")))
