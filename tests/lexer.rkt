@@ -9,7 +9,7 @@
    "lexer test suite"
 
    (test-case
-    "parses the empty string"
+    "lexes the empty string"
     (check-eq? '() (lex '() "")))
 
    (test-case
@@ -17,22 +17,22 @@
     (check-eq? '() (lex '() " ")))
 
    (test-case
-    "it parses a basic pattern"
+    "it lexes a basic pattern"
     (check-equal? '((eq "="))
                   (lex '(("=" eq)) "=")))
 
    (test-case
-    "it parses a basic pattern several times"
+    "it lexes a basic pattern several times"
     (check-equal? '((eq "=") (eq "="))
                   (lex '(("=" eq)) "==")))
 
    (test-case
-    "it parses a space-separated basic pattern several times"
+    "it lexes a space-separated basic pattern several times"
     (check-equal? '((eq "=") (eq "="))
                   (lex '(("=" eq)) "=  =")))
 
    (test-case
-    "it parses multiple patterns"
+    "it lexes multiple patterns"
     (check-equal? '((eq "=") (dash "-"))
                   (lex '(("=" eq) ("-" dash)) "=-")))
 
@@ -42,6 +42,6 @@
                   (lex '(("=+" eq) ("[0-9]+" num)) "== 5")))
 
    (test-case
-    "it fails to parse invalid code"
+    "it fails to lex invalid code"
     (check-exn exn:lexer-error?
                (lambda () (lex '() "anything"))))))
