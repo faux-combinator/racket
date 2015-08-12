@@ -44,5 +44,10 @@
     (check-equal? eq-token (parser `(,lparen-token ,eq-token ,rparen-token))
                   "it can also parse the `maybe` token"))
 
-   ; TODO test failing parser
+   (test-case
+    "it fails to parse invalid code"
+    (define parser (make-parser
+                    (expect 'anything)))
+    (check-exn exn:parser-error?
+               (lambda () (parser '()))))
    ))
