@@ -45,6 +45,20 @@
                   "it can also parse the `maybe` token"))
 
    (test-case
+    "it parses a `one-of` case"
+    (define parser (make-parser
+                    (one-of (expect 'eq) (expect 'dash) (expect 'under))))
+   (check-equal? eq-token (parser `(,eq-token))
+                 "can parse one-of's first case")
+   (check-equal? dash-token (parser `(,dash-token))
+                 "can parse one-of's second case")
+   (check-equal? under-token (parser `(,under-token))
+                 "can parse one-of's third case")
+   (check-exn exn:parser-error?
+              (lambda () (parser `(,lparen-token)))
+              "still can't parse wrong rules"))
+
+   (test-case
     "it fails to parse invalid code"
     (define parser (make-parser
                     (expect 'anything)))

@@ -1,6 +1,8 @@
 #lang racket
+(require "helpers.rkt")
+
 (provide make-parser
-         expect maybe
+         expect maybe one-of
          exn:parser-error?)
 
 ; I'd rather this was not mutable, alas,
@@ -28,17 +30,6 @@
     (parameterize ([current-parser (parser-impl tokens)])
       (rules))))
 
-; thunking `maybe`
-(define-syntax-rule (maybe rule)
-  (maybe-impl (lambda () rule)))
-
-(define (maybe-impl rule)
-  (let ([orig-tokens (get-cur-tokens)])
-    (with-handlers ([exn:parser-error? (lambda (e)
-                                         (set-cur-tokens! orig-tokens)
-                                         #f)])
-      (rule))))
-
 (define (expect token-type)
   (match (get-cur-tokens)
     [(list-rest (list type value) rest)
@@ -48,3 +39,31 @@
     [else (raise (exn:parser-error
                   (string-append "unable to match token: " (symbol->string token-type))
                   (current-continuation-marks)))]))
+
+; thunking `maybe`
+(define-syntax-rule (maybe rule)
+  (maybe-impl (lambda () rule)))
+
+(define (maybe-impl rule)
+  (let ([orig-tokens (get-cur-tokens)])
+    (with-handlers ([exn:parser-error?
+                     (lambda (e)
+                       (set-cur-tokens! orig-tokens)
+                       #f)])
+      (rule))))
+
+; thunking `one-of`
+(define-syntax-rule (one-of rule ...)
+  (one-of-impl (lambda () rule) ...))
+
+(define (one-of-impl . rules)
+  (let loop ([rules rules])
+    (match rules
+      [(list-rest rule rest)
+       (aif (maybe (rule))
+               it
+               (loop rest))]
+      [else (raise
+             (exn:parser-error
+              "unable to parse one-of cases"
+              (current-continuation-marks)))])))
