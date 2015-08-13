@@ -2,7 +2,7 @@
 (require "helpers.rkt")
 
 (provide make-parser
-         expect maybe one-of any-of
+         expect maybe one-of any-of many-of
          exn:parser-error?)
 
 ; I'd rather this was not mutable, alas,
@@ -79,3 +79,10 @@
 (define (any-of-impl rule)
   (awhile/list (maybe (rule))
           it))
+
+; thunking `many-of`
+(define-syntax-rule (many-of rule)
+  (many-of-impl (lambda () rule)))
+
+(define (many-of-impl rule)
+  (cons (rule) (any-of-impl rule)))
