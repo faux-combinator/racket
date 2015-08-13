@@ -1,7 +1,7 @@
 #lang racket
 (require racket/stxparam)
 
-(provide it aif awhile capturing-awhile)
+(provide it aif awhile awhile/list)
 
 (define-syntax-parameter it
   (lambda (stx)
@@ -19,7 +19,7 @@
           body ...)
         (loop condition))))
 
-(define-syntax-rule (capturing-awhile condition body ...)
+(define-syntax-rule (awhile/list condition body ...)
   (let loop ([tmp condition] [results '()])
     (if tmp
         (let ([val (syntax-parameterize ([it (make-rename-transformer #'tmp)])

@@ -33,7 +33,7 @@
     (let ([x 5])
       (check-equal?
        (list 5 4 3 2 1 0)
-       (capturing-awhile x
+       (awhile/list x
                          (if (= 0 x)
                              (set! x #f)
                              (set! x (- x 1)))
