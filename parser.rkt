@@ -2,7 +2,7 @@
 (require "helpers.rkt")
 
 (provide make-parser
-         expect maybe one-of
+         expect maybe one-of any-of
          exn:parser-error?)
 
 ; I'd rather this was not mutable, alas,
@@ -29,6 +29,10 @@
   (lambda (tokens)
     (parameterize ([current-parser (parser-impl tokens)])
       (rules))))
+; TODO?
+; (define retval (rules))
+; (expect 'eof) ;; just to make sure we parsed everything...
+; retval
 
 (define (expect token-type)
   (match (get-cur-tokens)
@@ -67,3 +71,11 @@
              (exn:parser-error
               "unable to parse one-of cases"
               (current-continuation-marks)))])))
+
+; thunking `any-of`
+(define-syntax-rule (any-of rule)
+  (any-of-impl (lambda () rule)))
+
+(define (any-of-impl rule)
+  (awhile/list (maybe (rule))
+          it))
