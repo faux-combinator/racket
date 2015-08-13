@@ -66,7 +66,7 @@
     (check-equal? '("=") (parser `(,eq-token))
                   "can parse one occurence")
     (check-equal? '("=" "=" "=") (parser `(,eq-token ,eq-token ,eq-token))
-                 "can parse any number of occurences"))
+                  "can parse any number of occurences"))
 
    (test-case
     "it parses a `many-of`"
@@ -78,11 +78,10 @@
     (check-equal? '("=") (parser `(,eq-token))
                   "can parse one occurence")
     (check-equal? '("=" "=" "=") (parser `(,eq-token ,eq-token ,eq-token))
-                 "can parse any number of occurences"))
+                  "can parse any number of occurences"))
    (test-case
     "it fails to parse invalid code"
     (define parser (make-parser
                     (expect 'anything)))
     (check-exn exn:parser-error?
-               (lambda () (parser '()))))
-   ))
+               (lambda () (parser '()))))))

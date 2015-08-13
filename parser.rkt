@@ -65,8 +65,8 @@
     (match rules
       [(list-rest rule rest)
        (aif (maybe (rule))
-               it
-               (loop rest))]
+            it
+            (loop rest))]
       [else (raise
              (exn:parser-error
               "unable to parse one-of cases"
@@ -78,7 +78,7 @@
 
 (define (any-of-impl rule)
   (awhile/list (maybe (rule))
-          it))
+               it))
 
 ; thunking `many-of`
 (define-syntax-rule (many-of rule)

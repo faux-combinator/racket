@@ -15,9 +15,9 @@
 (define-syntax-rule (awhile condition body ...)
   (let loop ([tmp condition])
     (when tmp
-        (syntax-parameterize ([it (make-rename-transformer #'tmp)])
-          body ...)
-        (loop condition))))
+      (syntax-parameterize ([it (make-rename-transformer #'tmp)])
+        body ...)
+      (loop condition))))
 
 (define-syntax-rule (awhile/list condition body ...)
   (let loop ([tmp condition] [results '()])
