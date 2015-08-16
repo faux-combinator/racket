@@ -35,6 +35,10 @@
     "it lexes multiple patterns"
     (check-equal? '((eq "=") (dash "-"))
                   (lex '(("=" eq) ("-" dash)) "=-")))
+   (test-case
+    "it lexes multiple, space-separated patterns"
+    (check-equal? '((eq "=") (dash "-"))
+                  (lex '(("=" eq) ("-" dash)) "=   -")))
 
    (test-case
     "it captures correctly"
