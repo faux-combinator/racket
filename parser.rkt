@@ -39,7 +39,7 @@
     [(list-rest (list type value) rest)
      #:when (eq? type token-type)
      (set-cur-tokens! rest)
-     (list type value) #| pls gief as pattern ;( |#]
+     (list type value) #| I could use as patterns here... when looks bad |#]
     [else (raise (exn:parser-error
                   (string-append "unable to match token: " (symbol->string token-type))
                   (current-continuation-marks)))]))
